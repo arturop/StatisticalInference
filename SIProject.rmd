@@ -1,0 +1,35 @@
+---
+title       : Statistical Inference Project
+---
+## 
+
+```{r, echo = FALSE, fig.width=9, fig.height = 6, fig.align='center'}
+library(ggplot2)
+
+set.seed(272727)
+
+lambda <- 0.2
+nosim <- 1000
+n <- 40
+
+table <- matrix(rexp(n*nosim, lambda), nrow = nosim)
+dat <- data.frame(
+  x = apply(table, 1, mean))
+popMean <- 1 / lambda
+popVariance <- (1 / lambda / sqrt(n)) ^ 2
+sampleMean <- mean(dat$x)
+sampleVariance <- var(dat$x)
+g <- ggplot(dat, aes(x = x)) + geom_histogram(alpha = .20, binwidth=.2, colour = "black", aes(y = ..density..)) 
+g <- g + geom_vline(xintercept = popMean, color="green") + geom_vline(xintercept = sampleMean, color="red")
+g <- g + stat_function(fun = dnorm, arg = c(mean = popMean, sd = 1/lambda/sqrt(n)), size = 1, color = "purple")
+g
+```
+
+
+---
+## Comparison of means and variances
+
+- Population Mean (in green) `r popMean`
+- Sample Mean (in red) `r sampleMean`
+- Population variance `r popVariance`
+- Sample variance `r sampleVariance`
