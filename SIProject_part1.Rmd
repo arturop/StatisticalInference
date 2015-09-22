@@ -1,11 +1,10 @@
 ---
 title: "Statistical Inference Project"
 author: "arturop@gmail.com"
-output: pdf_document
+output: html_document
 ---
 ## Overview
-The first part of this report addresses, via simulation, how representative the mean and the variance of the respective means of a series of samples of an exponential distribution (estimators) are of the mean and the variance of the population.
-Later I look at the ToothGrowth data from the R datasets package and, after some exploratory analysis, try to summarise what I see and compare growth by supp and dose based on hypothesis tests, laying out the assumptions I based my results on.
+This report addresses, via simulation, how representative the mean and the variance of the respective means of a series of samples of an exponential distribution (estimators) are of the mean and the variance of the population.
 
 ### Simulations
 The following code describes, annotated by comments, how I simulated 1000 samples with 40 observations from an exponential distribution each, how I represented the main questions I wanted to explore via a chart and also puts the different estimands and estimators side by side to see how close they come. The chart also compares how close the distribution is to a normal one depicted in purple and overlaid on the distribution of the samples. 
@@ -55,39 +54,3 @@ Note: I made the line representing the theoretical mean thicker than the other o
 - Population variance `r popVariance`
 - Estimate of variance  `popVariance / n` = `r popVariance / n`
 - Sample variance `r sampleVariance`
-
-### Basic Inferential Data Analysis
-
-The ToothGrowth dataset observes the response of odontoblasts (cells responsible for tooth growth) on 60 guinea pigs. Animals are split in two groups according to the supplement they are given. Each animal then receives the same dose of the same component each day for an unspecified period.
-
-The following scatterplot shows the tooth growth by supplement and dose
-
-```{r}
-data(ToothGrowth)
-coplot(len ~ dose | supp, data = ToothGrowth, panel = panel.smooth,
-       xlab = "ToothGrowth data: length vs dose, given type of supplement")
-```
-
-I am going to try to establish if, from a tooth growth perspective, it is preferable to administer the VC supplement over the OJ supplement for each type of dosage. Our null hypothesis will hence be that for any given dosage OJ produces the highest growth. As the number of observations is small, I will use a t-distribution.
-
-For a 0.5 dose we have:
-
-```{r}
-t.test(len ~ supp, data = ToothGrowth[ToothGrowth$dose == 0.5,], paired = FALSE, var.equal = FALSE)
-```
-
-For a 1.0 dose we have:
-
-```{r}
-t.test(len ~ supp, data = ToothGrowth[ToothGrowth$dose == 1,], paired = FALSE, var.equal = FALSE)
-```
-
-For a 2.0 dose we have:
-
-```{r}
-t.test(len ~ supp, data = ToothGrowth[ToothGrowth$dose == 2,], paired = FALSE, var.equal = FALSE)
-```
-
-We can see that in neither of the three cases we are able to reject the null hypothesis as the t stat for all of them falls squarely into the respective confidence intervals (at 95% level).
-
-Conclusion we can't establish that the VC supplementation is superior to the OJ supplementation.
